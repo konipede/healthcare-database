@@ -1,6 +1,35 @@
-*.db
-raw/
-data/raw/
+# Python
 __pycache__/
-*.ipynb_checkpoints/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Project specific
+logs/
+raw/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.log

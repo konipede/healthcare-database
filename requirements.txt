@@ -1,0 +1,14 @@
+# Boston Health Code Violations Database - Python Dependencies
+
+# Data fetching
+requests>=2.31.0
+
+# Data processing
+pandas>=2.0.0
+
+# Database (SQLite is built into Python, but pandas needs this for SQL support)
+# No additional database drivers needed for SQLite
+
+# Optional: For better performance with large datasets
+# pyarrow>=12.0.0  # Uncomment if working with very large datasets
+
