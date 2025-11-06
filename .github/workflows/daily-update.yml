@@ -6,6 +6,9 @@ on:
     - cron: '0 2 * * *'
   workflow_dispatch: # Allow manual triggering
 
+permissions:
+  contents: write  # Required to commit and push changes
+
 jobs:
   update-database:
     runs-on: ubuntu-latest
@@ -13,6 +16,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -24,6 +29,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
+    - name: Initialize database if needed
+      run: |
+        if [ ! -f boston.db ]; then
+          echo "Database not found, initializing..."
+          python scripts/setup_db.py
+        else
+          echo "Database exists, skipping initialization"
+        fi
+        
     - name: Run daily update
       run: |
         python scripts/daily_update.py
@@ -31,7 +45,8 @@ jobs:
     - name: Check for changes
       id: check-changes
       run: |
-        if git diff --quiet; then
+        git add -A
+        if git diff --staged --quiet; then
           echo "changes=false" >> $GITHUB_OUTPUT
         else
           echo "changes=true" >> $GITHUB_OUTPUT
@@ -42,8 +57,10 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add boston.db raw/
-        git commit -m "Daily database update - $(date)"
+        # Force add database file even though it's in .gitignore
+        git add -f boston.db || true
+        git add raw/ logs/ || true
+        git commit -m "Daily database update - $(date +'%Y-%m-%d %H:%M:%S UTC')" || exit 0
         git push
         
     - name: Create summary

@@ -6,10 +6,10 @@
 # Add to crontab with:
 #   crontab -e
 # Then add this line to run daily at 2 AM:
-#   0 2 * * * /Users/keremonipede/Desktop/Healthcode_violations/healthcare-database/scripts/run_daily_update.sh
+#   0 2 * * * /Users/Kerem/Portfolio/healthcare-database/scripts/run_daily_update.sh
 
 # Navigate to project directory
-cd /Users/keremonipede/Desktop/Healthcode_violations/healthcare-database || exit 1
+cd /Users/Kerem/Portfolio/healthcare-database || exit 1
 
 # Create logs directory if it doesn't exist
 mkdir -p logs
